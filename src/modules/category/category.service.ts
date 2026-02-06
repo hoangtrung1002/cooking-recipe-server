@@ -13,8 +13,12 @@ export class CategoryService {
     return await this.categoryRepository.create(createCategoryDto as any);
   }
 
-  async findAll(): Promise<Category[]> {
-    return await this.categoryRepository.findAll();
+  async findAll(): Promise<{ data: Category[]; total: number }> {
+    const { rows, count } = await this.categoryRepository.findAndCountAll();
+    return {
+      data: rows,
+      total: count,
+    };
   }
 
   async findOne(id: number): Promise<Category | null> {
