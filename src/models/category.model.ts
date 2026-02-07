@@ -3,7 +3,7 @@ import { Recipe } from './recipe.model';
 
 @Table
 export class Category extends Model<Category> {
-  @Column({ allowNull: false, unique: true, type: DataType.STRING })
+  @Column({ allowNull: false, type: DataType.STRING })
   name: string;
 
   @Column({ allowNull: true, type: DataType.STRING })

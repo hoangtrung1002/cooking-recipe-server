@@ -35,6 +35,9 @@ export class TransformInterceptor<T> implements NestInterceptor<
     next: CallHandler,
   ): Observable<ApiResponse<T>> {
     const request = context.switchToHttp().getRequest<Request>();
+    const startTime = Number(request.startTime);
+    const endTime = Date.now();
+    const takenTime = `${endTime - startTime}ms`;
     return next.handle().pipe(
       map((data: T) => {
         if (
@@ -66,6 +69,7 @@ export class TransformInterceptor<T> implements NestInterceptor<
               data,
               ...rest,
               path: request.url,
+              takenTime,
             };
           }
         }
@@ -75,6 +79,7 @@ export class TransformInterceptor<T> implements NestInterceptor<
           message: messageResponse,
           data,
           path: request.url,
+          takenTime,
         };
       }),
     );

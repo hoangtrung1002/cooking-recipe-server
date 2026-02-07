@@ -1,7 +1,8 @@
+import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ConfigService } from '@nestjs/config';
-import { ValidationPipe } from '@nestjs/common';
+import { AllExceptionFilter } from './common/filters/exception.filter';
 import { TransformInterceptor } from './common/response.interceptor';
 
 async function bootstrap() {
@@ -17,6 +18,7 @@ async function bootstrap() {
   ); // apply global pipe
   app.setGlobalPrefix('api/v1');
   app.useGlobalInterceptors(new TransformInterceptor());
+  app.useGlobalFilters(new AllExceptionFilter());
   const port = configService.get<string>('PORT');
   await app.listen(port ?? 3000);
 }
